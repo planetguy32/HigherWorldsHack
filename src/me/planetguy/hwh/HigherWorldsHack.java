@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import me.planetguy.hwh.handler.HWHBlockBreakHandler;
 import me.planetguy.hwh.handler.HWHBlockPlaceHandler;
 import me.planetguy.hwh.handler.HWHPlayerMoveHandler;
+import me.planetguy.hwh.handler.HWHWgenHandler;
 
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -21,6 +22,8 @@ public final class HigherWorldsHack extends JavaPlugin{
 	private BiMap<World, World> worldStack=HashBiMap.create();
 	
 	public static Logger HWH_LOGGER;
+	
+	private HWHWgenHandler wh;
 	
 	public static final int SHARE_HEIGHT=32;
 	public static final int WORLD_HEIGHT=256;
@@ -39,6 +42,8 @@ public final class HigherWorldsHack extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new HWHPlayerMoveHandler(worldStack, this), this);
 		getServer().getPluginManager().registerEvents(new HWHBlockBreakHandler(worldStack, this), this);
 		getServer().getPluginManager().registerEvents(new HWHBlockPlaceHandler(worldStack, this), this);
+		wh=new HWHWgenHandler(worldStack, this);
+		getServer().getPluginManager().registerEvents(wh, this);
 		HWH_LOGGER=this.getLogger();
 		loadConfigs();
 		//HWH_LOGGER.log(Level.WARNING, "Running HWH");
@@ -46,7 +51,7 @@ public final class HigherWorldsHack extends JavaPlugin{
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(cmd.getName().equalsIgnoreCase("hwh")){
-			if(args.length!=1){
+			if(args.length!=1&&args.length!=2){
 				sender.sendMessage("Command takes 1 argument");
 				return false;
 			}else if(args[0].equalsIgnoreCase("reload")){
@@ -55,7 +60,7 @@ public final class HigherWorldsHack extends JavaPlugin{
 					return true;
 			}else if(!(sender instanceof Player)){
 				//Only let players declare world as top or bottom
-				sender.sendMessage("Command can only be used by players");
+				sender.sendMessage("Only reload may be run from console");
 				return false;
 			}else{
 				Player player=(Player) sender;
@@ -69,8 +74,12 @@ public final class HigherWorldsHack extends JavaPlugin{
 					sender.sendMessage("Bottom of to-create link: "+player.getWorld().getName());
 					tryRegisterWorlds();
 					return true;
+				}else if(args[0].equalsIgnoreCase("sync")){
+					return CommandHandler.onCommandSync(args, player, worldStack);
+				}else if(args[0].equalsIgnoreCase("border")){
+					return CommandHandler.onCommandBorder(args, player, worldStack);
 				}else{
-					sender.sendMessage("Legal args: top, bottom, reload");
+					sender.sendMessage("Legal args: top, bottom, reload, sync");
 					return false;
 				}
 			}
@@ -92,6 +101,10 @@ public final class HigherWorldsHack extends JavaPlugin{
 					worldStack.put(w2, w);
 				}
 			}
+		}
+		String s=fc.getString("options.wgenSync");
+		if(s!=null){
+			wh.active=Boolean.parseBoolean(s);
 		}
 	}
 	

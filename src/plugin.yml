@@ -1,6 +1,18 @@
 name: HigherWorldHack
 main: me.planetguy.hwh.HigherWorldsHack
 version: 0.1
-description: Allows higher and deeper worlds with long-term compatibility.
-authors: [planetguy, Robinton]
-load: STARTUP
+description: Allows higher and deeper worlds with (hopefully) long-term compatibility.
+author: planetguy
+commands:
+   hwh:
+      description: Used to mark worlds as stacked. Takes one arg, "top" or "bottom".
+      usage: /<hwh ("top" "bottom" "reload" "sync")
+      permission: higherworldshack.link
+      permission-message: You don't have permission to link worlds! (me.planetguy.hwh.link)
+permissions:
+  higherworldshack.*:
+     description: Lets you use all HWH functionality
+     default: op
+  higherworldshack.link:
+     description: Lets you link worlds
+     default: op

@@ -1,2 +1,4 @@
 worldAbove:
   world_nether: world
+options:
+  wgenSync: false

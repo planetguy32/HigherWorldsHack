@@ -1,7 +1,5 @@
 package me.planetguy.hwh.handler;
 
-import java.util.logging.Level;
-
 import me.planetguy.hwh.HigherWorldsHack;
 
 import org.bukkit.Location;
@@ -33,14 +31,13 @@ public class HWHBlockBreakHandler implements Listener{
 			if(w==null)return;
 			Location toTeleportTo=new Location(w, to.getX(), HigherWorldsHack.transformPosUp(newY), to.getZ());
 			w.getBlockAt(toTeleportTo).setType(Material.AIR);
-			HigherWorldsHack.HWH_LOGGER.log(Level.WARNING, "Broke "+newY);
-			//TODO fix
+			//HigherWorldsHack.HWH_LOGGER.log(Level.WARNING, "Broke "+newY);
 		}else if(newY>HigherWorldsHack.WORLD_HEIGHT-HigherWorldsHack.SHARE_HEIGHT*3){
 			World w=worldBelow.inverse().get(b.getWorld());
 			if(w==null)return;
 			Location toTeleportTo=new Location(w, to.getX(), HigherWorldsHack.transformPosDown(newY), to.getZ());
 			w.getBlockAt(toTeleportTo).setType(Material.AIR);
-			HigherWorldsHack.HWH_LOGGER.log(Level.WARNING, "Broke "+newY);
+			//HigherWorldsHack.HWH_LOGGER.log(Level.WARNING, "Broke "+newY);
 		}
 	}
 

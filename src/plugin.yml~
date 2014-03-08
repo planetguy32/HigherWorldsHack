@@ -2,5 +2,4 @@ name: HigherWorldHack
 main: me.planetguy.hwh.HigherWorldsHack
 version: 0.1
 description: Allows higher and deeper worlds with long-term compatibility.
-author: planetguy
-load: STARTUP
+authors: [planetguy]
